@@ -73,11 +73,11 @@ void output_error(Tcl_Interp *interp, int sql_number) {
 /* sql connect */
 /*******************************************************************/
 
-int fbsql_connect(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
-	char *host = NULL;
-	char *user = NULL;
-	char *passwd = NULL;
-	char *db = NULL;
+int fbsql_connect(Tcl_Interp *interp, int sql_number, int argc, const char **argv) {
+	const char *host = NULL;
+	const char *user = NULL;
+	const char *passwd = NULL;
+	const char *db = NULL;
 	unsigned int port = 0;
 
 	/* check not already connected? */
@@ -120,8 +120,8 @@ int fbsql_disconnect(Tcl_Interp *interp, int sql_number) {
 /* sql general commands */
 /*******************************************************************/
 
-int fbsql_selectdb(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
-	char *database = NULL;
+int fbsql_selectdb(Tcl_Interp *interp, int sql_number, int argc, const char **argv) {
+	const char *database = NULL;
 
 	/* check a database name argument has been specified */
 	if (argc <= 0 || argv[0] == NULL) {
@@ -145,7 +145,7 @@ int fbsql_selectdb(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
 	}
 }
 
-int fbsql_numrows(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
+int fbsql_numrows(Tcl_Interp *interp, int sql_number, int argc, const char **argv) {
 	Tcl_Obj *obj_result;
 
 	/* set result object pointer */
@@ -196,8 +196,8 @@ int determine_field_type(int type) {
 /* sql query command(s) */
 /*******************************************************************/
 
-int fbsql_query(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
-	char *query = NULL;
+int fbsql_query(Tcl_Interp *interp, int sql_number, int argc, const char **argv) {
+	const char *query;
 	int i, length, field_count;
 	MYSQL_RES *result;
 	MYSQL_ROW row;
@@ -296,8 +296,8 @@ int fbsql_query(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
 /* sql query command(s) - non standard enhancements for FastBase */
 /*******************************************************************/
 
-int fbsql_startquery(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
-	char *query = NULL;
+int fbsql_startquery(Tcl_Interp *interp, int sql_number, int argc, const char **argv) {
+	const char *query = NULL;
 	int i;
 	int sql_huge = 0;
 #if UTF_ENCODING
@@ -390,7 +390,7 @@ int fbsql_startquery(Tcl_Interp *interp, int sql_number, int argc, char **argv) 
 	return TCL_OK;
 }
 
-int fbsql_fetchrow(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
+int fbsql_fetchrow(Tcl_Interp *interp, int sql_number, int argc, const char **argv) {
 	int i, field_type, length;
 	MYSQL_ROW row;
 	MYSQL_FIELD *field;
@@ -530,7 +530,7 @@ int fbsql_fetchrow(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
 	}
 }
 
-int fbsql_endquery(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
+int fbsql_endquery(Tcl_Interp *interp, int sql_number, int argc, const char **argv) {
 	/* check we are connected? */
 	if (!connection[sql_number].CONNECTED) {
 		Tcl_SetResult(interp, "Not connected to a server.", TCL_STATIC);
@@ -552,7 +552,7 @@ int fbsql_endquery(Tcl_Interp *interp, int sql_number, int argc, char **argv) {
 /* tcl sql command */
 /*******************************************************************/
 
-int SqlCmd (ClientData sql_word, Tcl_Interp *interp, int argc, char **argv) {
+int SqlCmd (ClientData sql_word, Tcl_Interp *interp, int argc, const char **argv) {
 	int sql_number = (int)sql_word;
 
 	/* any command specified */
@@ -611,7 +611,7 @@ int fbWaitCmd(clientData, interp, argc, argv)
 ClientData clientData;					/* Main window associated with interpreter. */
 Tcl_Interp *interp;					/* Current interpreter. */
 int argc;					/* Number of arguments. */
-char **argv;					/* Argument strings. */
+const char **argv;					/* Argument strings. */
 {
 	if (argc != 2) {
 		Tcl_AppendResult(interp, "wrong # args: should be \"",
