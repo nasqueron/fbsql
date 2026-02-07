@@ -15,7 +15,7 @@ LDFLAGS = -lz -shared $(MYSQL_LIBS) -L $(SYSLIBDIR) -L $(TCLLIBDIR)
 all:    fbsql.so
 
 fbsql.so: fbsql.o
-	$(LD) -o $@  $<  $(LDFLAGS)
+	$(LD) -o fbsql.so fbsql.o $(LDFLAGS)
 
 clean:
 	-rm -f core *.o
