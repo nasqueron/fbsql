@@ -1,16 +1,16 @@
-MYSQLLIBDIR = /usr/local/lib/mysql
-MYSQLINCDIR = /usr/local/include/mysql
+MYSQL_INCLUDES != mysql_config --include
+MYSQL_LIBS != mysql_config --libs
 
 TCLLIBDIR = /usr/local/lib
 TCLINCDIR = /usr/local/include/tcl8.6
 
-#CC = gcc
+SYSLIBDIR = /usr/lib
+
 PIC = -fPIC
-INCLUDES = -I/home/local/include -I$(MYSQLINCDIR) -I$(TCLINCDIR)
+INCLUDES = $(MYSQL_INCLUDES) -I$(TCLINCDIR)
 CFLAGS += -Wall $(PIC) $(INCLUDES)
 
-# For Solaris8 :
-LDFLAGS =  -lz -G -L $(MYSQLLIBDIR) -L $(TCLLIBDIR) -lmysqlclient
+LDFLAGS = -lz -shared $(MYSQL_LIBS) -L $(SYSLIBDIR) -L $(TCLLIBDIR)
 
 all:    fbsql.so
 
